@@ -1,1 +1,1 @@
-# DiceRace
+# Dice Race

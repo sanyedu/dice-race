@@ -1,0 +1,13 @@
+recursive: true
+extension: ['ts']
+spec:
+    - 'src/test/**/*.spec.*'
+loader:
+    - 'ts-node/esm'
+require:
+    - ts-node/register
+node-option:
+    - 'experimental-specifier-resolution=node'
+file:
+    - './src/test/setup-env-hook.ts'
+timeout: '60s'

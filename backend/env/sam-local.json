@@ -1,0 +1,7 @@
+{
+    "Parameters": {
+        "STACK_NAME": "SanyEdu",
+        "AWS_SAM_LOCAL": "true",
+        "DYNAMODB_LOCAL_ENDPOINT": "http://host.docker.internal:8000"
+    }
+}
