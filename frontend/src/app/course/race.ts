@@ -38,15 +38,26 @@ function sortedSumActionShiftByStudentToLecture(
     return returnedStudents
 }
 
+/* 竟速算法：
+ * V: 初始速度
+ * a: 每次shift的速度增加/减少值（a/v的比值越大，学生之间的差距越明显）
+ * TS: TotalShift速度的总改变次数之和（可正可负）
+ * s=vt, s即为maxPercent，所有人的初始速度都是v，实际速度为v + (a * TS)
+ * 第1名的跑完的距离为maxPercent，因此跑完时间 t=maxPercent / (a*TSmax + v)
+ * 用这个时间，根据每个人的实际速度可以算出每个人跑的距离： s = maxPercent*(a*TS+v)/(a*TSmax+v)
+ */
+
 function rankedStudentList(
     students: any[],
-    max: number,
+    maxShift: number,
     maxPercent: number
 ): any[] {
+    const v = 50
+    const a = 10
     const ranked: any[] = students.map((s: any) => {
         return {
             name: s.name,
-            percent: (s.totalShift / max) * maxPercent
+            percent: (maxPercent * (a * s.totalShift + v)) / (a * maxShift + v)
         }
     })
     ranked.sort((a, b) => a.percent - b.percent)
@@ -65,8 +76,8 @@ function rankAtCourseLecture(course: string, lectureId: number): any[] {
     if (!lecture) throw new Error(`can not find the lecture: ${lectureId}`)
 
     const students = sortedSumActionShiftByStudentAtLecture(lecture)
-    let max = students[0].totalShift
-    const rankedStudents = rankedStudentList(students, max, 100)
+    let maxShift = students[0].totalShift
+    const rankedStudents = rankedStudentList(students, maxShift, 100)
     return rankedStudents
 }
 
@@ -86,14 +97,14 @@ function rankToCourseLecture(course: string, lectureId: number): any[] {
         courseData['students'],
         lectures
     )
-    let max = students[0].totalShift
+    let maxShift = students[0].totalShift
     const maxPercent = (lectureId / courseData['lectures'].length) * 100.0
-    const rankedStudents = rankedStudentList(students, max, maxPercent)
+    const rankedStudents = rankedStudentList(students, maxShift, maxPercent)
     return rankedStudents
 }
 
 function createOption(course: string, lecture: number, isAt: boolean) {
-    const title = `${course} at ${lecture}`
+    const title = `${course} ${isAt ? 'at' : 'to'} ${lecture}`
     let rank = isAt
         ? rankAtCourseLecture(course, lecture)
         : rankToCourseLecture(course, lecture)
