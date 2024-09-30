@@ -4,12 +4,13 @@
     "private": true,
     "scripts": {
         "dev": "next dev",
-        "build": "next build && next export",
+        "build": "next build",
         "start": "next start",
         "lint": "next lint"
     },
     "dependencies": {
         "echarts-for-react": "^3.0.2",
+        "frontend": "file:",
         "lodash": "^4.17.21",
         "next": "14.1.4",
         "react": "^18",
